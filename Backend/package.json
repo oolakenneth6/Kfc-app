@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ignore error.log index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.1",
+    "express-validation": "^4.1.0",
+    "helmet": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^6.3.8",
+    "nodemon": "^1.14.10",
+    "razorpay": "^2.8.1",
+    "uuid": "^14.0.2"
+  }
+}

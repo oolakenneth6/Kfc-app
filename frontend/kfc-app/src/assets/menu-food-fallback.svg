@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Illustration of a chicken meal">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8ef"/>
+      <stop offset="1" stop-color="#f3e8dc"/>
+    </linearGradient>
+    <linearGradient id="chicken" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#ffc96b"/>
+      <stop offset="1" stop-color="#d77a23"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dy="12"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope=".22"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="480" rx="24" fill="url(#background)"/>
+  <circle cx="320" cy="236" r="178" fill="#fff" opacity=".55"/>
+  <ellipse cx="320" cy="391" rx="194" ry="27" fill="#c9b8a4" opacity=".42"/>
+  <g filter="url(#shadow)">
+    <path d="M153 143c-25-35-13-71 15-76 28-5 42 30 31 57l-16 38m85-43c-9-42 15-69 42-58 26 11 25 47 6 69l-26 31m60-14c1-37 28-57 50-40 22 17 13 49-12 66l-32 23" fill="none" stroke="#e49a37" stroke-linecap="round" stroke-width="26"/>
+    <path d="M182 210c-4-40 22-70 62-71 34-44 102-34 117 7 42 4 63 39 53 74-8 29-35 40-63 35l-83-2c-44 6-82-7-86-43Z" fill="url(#chicken)"/>
+    <path d="M211 194c14-22 38-31 61-25m40-16c22-5 42 3 52 19m-109 42c20 9 39 9 58 2" fill="none" stroke="#b85a1d" stroke-linecap="round" stroke-width="9" opacity=".72"/>
+    <path d="M150 247h340l-38 151c-5 18-21 30-39 30H227c-18 0-34-12-39-30l-38-151Z" fill="#fff"/>
+    <path d="M150 247h58l31 181h-12c-18 0-34-12-39-30l-38-151Zm122 0h52v181h-52V247Zm116 0h58l-38 151c-5 18-21 30-39 30h-12l31-181Z" fill="#e4002b"/>
+    <path d="M143 233c0-10 8-18 18-18h318c10 0 18 8 18 18v27H143v-27Z" fill="#c90025"/>
+    <path d="M236 316h168" stroke="#f4e8dc" stroke-linecap="round" stroke-width="10" opacity=".9"/>
+    <text x="320" y="366" fill="#272322" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4" text-anchor="middle">MEAL</text>
+  </g>
+</svg>
