@@ -9,6 +9,7 @@ import styles from "./Home.module.css";
 import QuickBites from "../home_components/QuickBites";
 import Favorites from "../home_components/Favorites";
 import Featured from "../home_components/Featured";
+import FoodImage from "../menu_components/FoodImage";
 
 const mainSlider = {
   infinite: true,
@@ -109,9 +110,9 @@ const Home = () => {
                   </span>
                 </Link>
               </div>
-              <img
+              <FoodImage
                 src="https://images.ctfassets.net/9tka4b3550oc/5feMdkX9xmGBVEE4TWoCVs/6daa55ed40b3d92d8639419970116fb2/JackHarlowMeal_Desktop_Home_Hero_1440x640_V1.jpg?q=75"
-                alt=""
+                alt="Chicken meal"
               />
               <div className={styles.orderingInfo}>
                 <p>
@@ -137,9 +138,9 @@ const Home = () => {
                   </span>
                 </Link>
               </div>
-              <img
+              <FoodImage
                 src="https://images.ctfassets.net/9tka4b3550oc/7qmupuZfaFYb3uY93oPva9/71adcc3c74ed77d92aba39d31e9d4240/Side-Lovers.jpg?q=75&w=1680"
-                alt=""
+                alt="Bucket meal"
               />
               <div className={styles.orderingInfo}>
                 <p
@@ -253,7 +254,7 @@ const Home = () => {
             </div>
             <div className={styles.videoBanner}>
               <div className={styles.videoBanner__fig}>
-                <img
+                <FoodImage
                   src="https://digitaleat.kfc.com/menus/image/bare/kfc-IndFries?q=75"
                   alt="KFC Fries"
                 />
