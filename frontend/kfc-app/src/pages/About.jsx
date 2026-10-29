@@ -6,7 +6,7 @@ let imgsrc = require("./about.jpg");
 const About = () => {
   return (
     <div className={styles.careersDiv}>
-      <img src={imgsrc} alt="Careers Page" />
+      <img src={imgsrc} alt="About KFC" />
     </div>
   );
 }
