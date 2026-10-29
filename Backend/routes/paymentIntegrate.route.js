@@ -2,6 +2,7 @@ const { Router } = require("express");
 const razorpay = require("razorpay");
 const crypto = require("crypto");
 const Menu = require("../model/menuSchema");
+const DemoOrder = require("../model/demoOrderSchema");
 
 const paymentRouter = Router();
 
@@ -26,6 +27,80 @@ const priceToPaise = (price) => {
   const [rupees, paise = ""] = match[1].replace(/,/g, "").split(".");
   return Number(rupees) * 100 + Number(paise.padEnd(2, "0"));
 };
+
+paymentRouter.post("/demo-orders", async (req, res) => {
+  const { items } = req.body || {};
+  if (
+    !Array.isArray(items) ||
+    items.length === 0 ||
+    items.length > 50 ||
+    items.some(
+      (item) =>
+        !item ||
+        typeof item.id !== "string" ||
+        !/^[a-f\d]{24}$/i.test(item.id) ||
+        !Number.isSafeInteger(item.qty) ||
+        item.qty < 1 ||
+        item.qty > 99
+    )
+  ) {
+    return res.status(400).json({ message: "A valid non-empty cart is required." });
+  }
+
+  try {
+    const quantities = new Map();
+    for (const item of items) {
+      const id = item.id.toLowerCase();
+      quantities.set(id, (quantities.get(id) || 0) + item.qty);
+    }
+
+    const menuItems = await Menu.find({
+      _id: { $in: [...quantities.keys()] },
+    })
+      .select("_id title price")
+      .lean();
+
+    if (menuItems.length !== quantities.size) {
+      return res.status(400).json({ message: "One or more cart items are unavailable." });
+    }
+
+    const orderItems = menuItems.map((item) => ({
+      menuItemId: item._id,
+      title: item.title,
+      quantity: quantities.get(String(item._id)),
+      unitAmountPaise: priceToPaise(item.price),
+    }));
+    const amountPaise = orderItems.reduce(
+      (total, item) => total + item.unitAmountPaise * item.quantity,
+      0
+    );
+
+    if (!Number.isSafeInteger(amountPaise) || amountPaise <= 0) {
+      return res.status(400).json({ message: "The cart total is invalid." });
+    }
+
+    const order = await DemoOrder.create({
+      orderNumber: `DEMO-${crypto.randomBytes(6).toString("hex").toUpperCase()}`,
+      items: orderItems,
+      amountPaise,
+    });
+
+    return res.status(201).json({
+      message: "Demo order placed.",
+      order: {
+        id: order._id,
+        orderNumber: order.orderNumber,
+        amountPaise: order.amountPaise,
+        currency: order.currency,
+        paymentStatus: order.paymentStatus,
+        orderStatus: order.orderStatus,
+      },
+    });
+  } catch (error) {
+    console.error("Unable to create demo order:", error);
+    return res.status(500).json({ message: "Unable to place the demo order." });
+  }
+});
 
 // Create a Razorpay order using prices stored in the menu, never a client total.
 paymentRouter.post("/orders", async (req, res) => {
