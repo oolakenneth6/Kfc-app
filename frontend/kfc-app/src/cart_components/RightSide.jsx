@@ -10,6 +10,13 @@ const RightSide = () => {
     const [input, setInput] = useState(false);
     const [stotal,setstotal]= useState(0);
     const paymentKey = process.env.REACT_APP_RAZORPAY_KEY_ID;
+    const paymentMode = (
+      process.env.REACT_APP_PAYMENT_MODE || (paymentKey ? "razorpay" : "demo")
+    ).toLowerCase();
+    const [demoPaymentOpen, setDemoPaymentOpen] = useState(false);
+    const [demoOrder, setDemoOrder] = useState(null);
+    const [demoOrderError, setDemoOrderError] = useState("");
+    const [demoOrderSubmitting, setDemoOrderSubmitting] = useState(false);
     const cart= useSelector((state)=>state.cart)
     const navigate= useNavigate();
     const location = useLocation();
@@ -27,7 +34,7 @@ const RightSide = () => {
     const handleInput = () => {
       setInput(!input);
     };
-    
+
     const initPayment = (data) => {
       if (typeof window.Razorpay !== "function") {
         window.alert("Razorpay Checkout did not load. Please refresh and try again.");
@@ -59,6 +66,23 @@ const RightSide = () => {
     };
 
     const handlePayment = async () => {
+      if (cart.length === 0) {
+        window.alert("Add items to your cart before paying.");
+        return;
+      }
+
+      if (paymentMode === "demo") {
+        setDemoOrder(null);
+        setDemoOrderError("");
+        setDemoPaymentOpen(true);
+        return;
+      }
+
+      if (paymentMode !== "razorpay") {
+        window.alert("The selected payment mode is not supported.");
+        return;
+      }
+
       if (!paymentKey) {
         window.alert("Online payment is not configured for this app.");
         return;
@@ -74,6 +98,25 @@ const RightSide = () => {
           err.response?.data?.message || "Unable to start payment. Please try again."
         );
         console.error("Unable to start payment:", err);
+      }
+    };
+
+    const completeDemoOrder = async () => {
+      setDemoOrderSubmitting(true);
+      setDemoOrderError("");
+
+      try {
+        const { data } = await api.post("/api/payment/demo-orders", {
+          items: cart.map(({ id, qty }) => ({ id, qty })),
+        });
+        setDemoOrder(data.order);
+      } catch (err) {
+        setDemoOrderError(
+          err.response?.data?.message || "Unable to place the demo order. Please try again."
+        );
+        console.error("Unable to place demo order:", err);
+      } finally {
+        setDemoOrderSubmitting(false);
       }
     };
     
@@ -157,10 +200,63 @@ const RightSide = () => {
             </div>
           </button>):(   <button onClick={handlePayment} className="redButton">
             <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <p>Payment</p>
+              <p>{paymentMode === "demo" ? "Pay (Demo)" : "Payment"}</p>
               <p>₹{!input?stotal:stotal+5}</p>
             </div>
           </button>)}
+          {demoPaymentOpen && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="demo-payment-title"
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 10000,
+                display: "grid",
+                placeItems: "center",
+                padding: "1rem",
+                background: "rgba(0, 0, 0, 0.55)",
+              }}
+            >
+              <div
+                style={{
+                  width: "min(100%, 28rem)",
+                  padding: "2rem",
+                  borderRadius: "0.5rem",
+                  background: "white",
+                  color: "#202124",
+                }}
+              >
+                <h2 id="demo-payment-title">{demoOrder ? "Demo order placed" : "Demo order"}</h2>
+                <p>
+                  {demoOrder
+                    ? `Order ${demoOrder.orderNumber} was saved for ₹${(demoOrder.amountPaise / 100).toFixed(2)}. This is a demo only: no money was taken and the order will not be fulfilled.`
+                    : `Place a demo order for ₹${!input ? stotal : stotal + 5}? No real payment will be made.`}
+                </p>
+                {demoOrderError && <p role="alert">{demoOrderError}</p>}
+                <div style={{ display: "flex", gap: "0.75rem" }}>
+                  {!demoOrder && (
+                    <button
+                      type="button"
+                      onClick={completeDemoOrder}
+                      className="redButton"
+                      disabled={demoOrderSubmitting}
+                    >
+                      {demoOrderSubmitting ? "Placing order..." : "Place demo order"}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setDemoPaymentOpen(false)}
+                    disabled={demoOrderSubmitting}
+                  >
+                    {demoOrder ? "Close" : "Cancel"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
        
     </>
   )
