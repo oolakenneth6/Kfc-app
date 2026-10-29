@@ -25,17 +25,18 @@ of each authorized menu administrator to `ADMIN_EMAILS` as a comma-separated
 list. An account must sign in with an allowlisted email before it can create,
 update, or delete menu items; public menu reads remain available.
 Copy `Backend\.env.example` to `Backend\.env` and
-`frontend\kfc-app\.env.example` to `frontend\kfc-app\.env`. Replace the
-Razorpay placeholders with API credentials created in your own
-[Razorpay Dashboard](https://dashboard.razorpay.com/). Use matching test-mode
-keys for local testing: keep the key secret only in `Backend\.env`, and put
-the matching public key ID in `frontend\kfc-app\.env`. Never expose or commit
-the key secret. For live payments, complete Razorpay account activation and
-replace the test credentials with live credentials. Restart both apps after
-changing environment files. Online payments remain disabled until valid
-credentials are supplied. The payment API derives order amounts from the
-server-side menu, verifies Razorpay signatures, and captures authorized
-payments.
+`frontend\kfc-app\.env.example` to `frontend\kfc-app\.env`. The frontend
+example selects `REACT_APP_PAYMENT_MODE=demo`, which saves a clearly labeled
+demo order without charging money or requesting fulfillment. To use
+Razorpay's test checkout instead, set `REACT_APP_PAYMENT_MODE=razorpay`, then
+replace the Razorpay placeholders with matching test API credentials from
+your own [Razorpay Dashboard](https://dashboard.razorpay.com/). Keep the key
+secret only in `Backend\.env`, and put the matching public key ID in
+`frontend\kfc-app\.env`. Never expose or commit the key secret. For live
+payments, complete Razorpay account activation and use live credentials.
+Restart both apps after changing environment files. The payment API derives
+Razorpay order amounts from the server-side menu, verifies signatures, and
+captures authorized payments.
 
 Menu read operations are available at `GET /api/product/menu` and
 `GET /api/product/menu/:id`. Admin-only writes use
