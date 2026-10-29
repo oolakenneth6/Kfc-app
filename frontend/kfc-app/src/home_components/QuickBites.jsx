@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import SliderData from "../SliderData.json";
 import styles from './HomeSlider.module.css';
+import FoodImage from "../menu_components/FoodImage";
 
 export default class SlickGoTo extends React.Component {
   state = {
@@ -62,9 +63,9 @@ export default class SlickGoTo extends React.Component {
         <Slider ref={(slider) => (this.slider = slider)} {...settings}>
           {SliderData.quickbites.map((item) => (
             <div className={styles.itemDiv} key={Math.random()*1000} style={{outline:"none"}}>
-              <img
+              <FoodImage
                 src={item.image}
-                alt={item.type}
+                alt={item.title}
                 className={styles.itemImg}
               />
               <p className={styles.itemTitle}>{item.title}</p>
