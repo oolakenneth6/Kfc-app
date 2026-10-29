@@ -91,6 +91,52 @@ ul>p {
 .lastLinefootsvg{
     visibility:hidden;
 }
+.studentCredits{
+    margin: 1.5rem auto 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid #4a4b4d;
+    color: white;
+    text-align: center;
+}
+.studentCredits p{
+    margin: 0.35rem 0;
+    font-size: 14px;
+}
+.memberRow{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+}
+.memberCard{
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.memberAvatar{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #e4002b, #ff7f32);
+}
+.memberText{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+    font-size: 12px;
+}
 @media all and (min-width:0px) and (max-width:1024px) {
     .footermaindiv{
         width:100vw;
@@ -244,6 +290,25 @@ export const Footer = () => {
                     <a href="https://www.instagram.com/_mad___boxer_/"><img height={"30rem"} style={{ padding: "0.3vw 1vw" }} src={instagram} alt="" /></a>
                     <a href="https://www.facebook.com/people/Arshad-Khan/100004164048208/"><img height={"30rem"} style={{ padding: "0.3vw 1vw" }} src={facebook} alt="" /></a>
                     <a href="https://www.linkedin.com/in/md-arshad-khan-350206154/"><img height={"30rem"} style={{ padding: "0.3vw 1vw" }} src={twitter} alt="" /></a>
+                </div>
+                <div className="studentCredits" aria-label="Project team">
+                    <p>Project Team</p>
+                    <div className="memberRow">
+                        <div className="memberCard">
+                            <div className="memberAvatar">OK</div>
+                            <div className="memberText">
+                                <span>Oola kenneth</span>
+                                <span>S25D14/010</span>
+                            </div>
+                        </div>
+                        <div className="memberCard">
+                            <div className="memberAvatar">MB</div>
+                            <div className="memberText">
+                                <span>Mutebi brian john</span>
+                                <span>S25D14/026</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </FooterStyled>
